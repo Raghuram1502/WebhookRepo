@@ -25,8 +25,11 @@ def process_event(event_type,data):
         author = data['sender']['login']
         from_branch = data['pull_request']['head']['ref']
         to_branch = data['pull_request']['base']['ref']
-        message = f'"{author}" submitted a pull request from "{from_branch}" to "{to_branch}" on {formatted_time}'
 
+        if data['action'] == 'closed' and data['pull_request'].get('merged'):
+            message = f'"{author}" merged branch "{from_branch}" to "{to_branch}" on {formatted_time}'
+        else:
+            message = f'"{author}" submitted a pull request from "{from_branch}" to "{to_branch}" on {formatted_time}'
 
     return {
         'message': message,
