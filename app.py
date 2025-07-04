@@ -21,18 +21,6 @@ def process_event(event_type,data):
         branch = data['ref'].split('/')[-1]
         message = f'"{author}" pushed to "{branch}" on {formatted_time}'  
 
-        commits = data.get("commits", [])
-        for commit in commits:
-            msg = commit.get("message", "")
-            if msg.startswith("Merge"):
-                # Optional: parse branch names from message
-                message = f'"{author}" merged a branch to "{branch}" on {formatted_time}'
-                break
-        else:
-            # Normal push
-            message = f'"{author}" pushed to "{branch}" on {formatted_time}'
-
-
     elif event_type == 'pull_request':
         author = data['sender']['login']
         from_branch = data['pull_request']['head']['ref']
